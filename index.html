@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rob# - C# Windows Forms IDE</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'><rect width='18' height='18' rx='4' fill='%238544d6'/><text x='2' y='13.2' font-family='sans-serif' font-size='11' font-weight='800' fill='white'>R<tspan fill='%23d4b8ff' font-size='9.5'>%23</tspan></text></svg>">
+</head>
+<body class="vs-dark">
+  <!-- Application Container -->
+  <div id="vs-app" class="vs-app-container">
+
+    <!-- Top Window Title Bar -->
+    <header class="vs-titlebar">
+      <div class="vs-titlebar-left">
+        <svg class="vs-icon-logo" viewBox="0 0 18 18" width="18" height="18" title="Rob#">
+          <defs>
+            <linearGradient id="rsharp-grad" x1="0" y1="0" x2="18" y2="18" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#8544d6"/>
+              <stop offset="1" stop-color="#5c1b75"/>
+            </linearGradient>
+          </defs>
+          <rect width="18" height="18" rx="3.5" fill="url(#rsharp-grad)"/>
+          <text x="2" y="13.2" font-family="'Segoe UI', system-ui, -apple-system, sans-serif" font-size="11" font-weight="800" fill="#ffffff">R<tspan fill="#d4b8ff" font-size="9.5" font-weight="900">#</tspan></text>
+        </svg>
+        <span class="vs-window-title" id="vs-project-title">WindowsFormsApp1 - Rob#</span>
+      </div>
+      <div class="vs-titlebar-center">
+        <div class="vs-quick-search">
+          <span class="search-icon">🔍</span>
+          <input type="text" placeholder="Search Rob# (Ctrl+Q)" id="vs-quick-search-input" readonly title="Rob# C# IDE">
+        </div>
+      </div>
+      <div class="vs-titlebar-right">
+        <button class="vs-theme-btn" id="btn-toggle-theme" title="Toggle Light / Dark Theme">🌓 Theme</button>
+        <span class="win-btn win-min" title="Minimize">─</span>
+        <span class="win-btn win-max" title="Maximize">□</span>
+        <span class="win-btn win-close" title="Close">✕</span>
+      </div>
+    </header>
+
+    <!-- Main Menu Bar -->
+    <nav class="vs-menubar">
+      <div class="menu-item" data-menu="file">
+        File
+        <div class="dropdown-menu" id="menu-file">
+          <button class="menu-action" id="menu-new-project"><span class="menu-icon">📄</span>New Project...</button>
+          <button class="menu-action" id="menu-open-project"><span class="menu-icon">📂</span>Open Project (JSON)...</button>
+          <button class="menu-action" id="menu-save-project"><span class="menu-icon">💾</span>Save Project <span class="shortcut">Ctrl+S</span></button>
+          <button class="menu-action" id="menu-export-project"><span class="menu-icon">⬇</span>Export Project File (.json)</button>
+          <div class="menu-divider"></div>
+          <button class="menu-action" id="menu-export-cs"><span class="menu-icon">📋</span>Export C# Source Files</button>
+          <div class="menu-divider"></div>
+          <button class="menu-action" id="menu-load-template-1"><span class="menu-icon">⭐</span>Sample: Clicker Counter</button>
+          <button class="menu-action" id="menu-load-template-2"><span class="menu-icon">⏱</span>Sample: Stopwatch & Timer</button>
+          <button class="menu-action" id="menu-load-template-3"><span class="menu-icon">🔄</span>Sample: Unit & Currency Converter</button>
+          <button class="menu-action" id="menu-load-template-4"><span class="menu-icon">📝</span>Sample: Student Grade Calculator</button>
+        </div>
+      </div>
+      <div class="menu-item" data-menu="edit">
+        Edit
+        <div class="dropdown-menu" id="menu-edit">
+          <button class="menu-action" id="menu-undo"><span class="menu-icon">↩</span>Undo <span class="shortcut">Ctrl+Z</span></button>
+          <button class="menu-action" id="menu-redo"><span class="menu-icon">↪</span>Redo <span class="shortcut">Ctrl+Y</span></button>
+          <div class="menu-divider"></div>
+          <button class="menu-action" id="menu-delete-control"><span class="menu-icon">🗑</span>Delete Selected Control <span class="shortcut">Del</span></button>
+          <button class="menu-action" id="menu-clear-form"><span class="menu-icon">🧹</span>Clear All Controls</button>
+        </div>
+      </div>
+      <div class="menu-item" data-menu="view">
+        View
+        <div class="dropdown-menu" id="menu-view">
+          <button class="menu-action" id="menu-view-designer"><span class="menu-icon">🖼</span>Form Designer <span class="shortcut">Shift+F7</span></button>
+          <button class="menu-action" id="menu-view-code"><span class="menu-icon">💻</span>View Code (Form1.cs) <span class="shortcut">F7</span></button>
+          <div class="menu-divider"></div>
+          <button class="menu-action" id="menu-toggle-toolbox"><span class="menu-icon">🧰</span>Toolbox <span class="shortcut">Ctrl+Alt+X</span></button>
+          <button class="menu-action" id="menu-toggle-solution"><span class="menu-icon">📁</span>Solution Explorer</button>
+          <button class="menu-action" id="menu-toggle-properties"><span class="menu-icon">⚙</span>Properties Window <span class="shortcut">F4</span></button>
+          <button class="menu-action" id="menu-toggle-output"><span class="menu-icon">📋</span>Output & Errors</button>
+          <div class="menu-divider"></div>
+          <button class="menu-action" id="menu-toggle-grid"><span class="menu-icon">▦</span>Toggle Snap-to-Grid</button>
+        </div>
+      </div>
+      <div class="menu-item" data-menu="build">
+        Build
+        <div class="dropdown-menu" id="menu-build">
+          <button class="menu-action" id="menu-build-solution"><span class="menu-icon">🔨</span>Build Solution <span class="shortcut">Ctrl+Shift+B</span></button>
+          <button class="menu-action" id="menu-rebuild-solution"><span class="menu-icon">🔄</span>Rebuild Solution</button>
+        </div>
+      </div>
+      <div class="menu-item" data-menu="debug">
+        Debug
+        <div class="dropdown-menu" id="menu-debug">
+          <button class="menu-action" id="menu-start-debug"><span class="menu-icon">▶</span>Start Debugging (Run Form) <span class="shortcut">F5</span></button>
+          <button class="menu-action" id="menu-stop-debug"><span class="menu-icon">⏹</span>Stop Debugging <span class="shortcut">Shift+F5</span></button>
+        </div>
+      </div>
+      <div class="menu-item" data-menu="help">
+        Help
+        <div class="dropdown-menu" id="menu-help">
+          <button class="menu-action" id="menu-open-guide"><span class="menu-icon">❓</span>C# Windows Forms Tutorial & Guide</button>
+          <button class="menu-action" id="menu-open-cheatsheet"><span class="menu-icon">📖</span>C# Code Cheatsheet for Students</button>
+          <button class="menu-action" id="menu-about"><span class="menu-icon">ℹ</span>About This C# Forms IDE</button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Standard Tool Bar -->
+    <div class="vs-toolbar">
+      <!-- File Operations -->
+      <button class="tb-btn" id="tb-save" title="Save Project (Ctrl+S)">
+        <span class="tb-icon">💾</span>
+      </button>
+      <div class="tb-separator"></div>
+
+      <!-- Undo / Redo -->
+      <button class="tb-btn" id="tb-undo" title="Undo (Ctrl+Z)">
+        <span class="tb-icon">↩</span>
+      </button>
+      <button class="tb-btn" id="tb-redo" title="Redo (Ctrl+Y)">
+        <span class="tb-icon">↪</span>
+      </button>
+      <div class="tb-separator"></div>
+
+      <!-- Solution Config Dropdowns -->
+      <div class="tb-select-wrapper">
+        <select class="tb-select" id="tb-config">
+          <option>Debug</option>
+          <option>Release</option>
+        </select>
+      </div>
+      <div class="tb-select-wrapper">
+        <select class="tb-select" id="tb-platform">
+          <option>Any CPU</option>
+          <option>x64</option>
+          <option>x86</option>
+        </select>
+      </div>
+      <div class="tb-separator"></div>
+
+      <!-- Start / Run Button (Green Play Icon) -->
+      <button class="tb-btn tb-btn-run" id="tb-start" title="Start Debugging (F5) - Run your Windows Form Application">
+        <span class="tb-run-icon">▶</span>
+        <span class="tb-run-text">Start</span>
+      </button>
+      <button class="tb-btn tb-btn-stop" id="tb-stop" title="Stop Debugging (Shift+F5)" disabled>
+        <span class="tb-stop-icon">⏹</span>
+      </button>
+
+      <div class="tb-separator"></div>
+
+      <!-- Quick View Switchers -->
+      <button class="tb-btn" id="tb-view-designer" title="View Form Designer (Shift+F7)">
+        <span class="tb-icon">🖼</span>
+        <span class="tb-label">Designer</span>
+      </button>
+      <button class="tb-btn" id="tb-view-code" title="View C# Code (F7)">
+        <span class="tb-icon">💻</span>
+        <span class="tb-label">Code</span>
+      </button>
+
+      <div class="tb-separator"></div>
+
+      <!-- Grid Toggle -->
+      <button class="tb-btn active" id="tb-grid-toggle" title="Snap to Grid (8px)">
+        <span class="tb-icon">▦</span>
+        <span class="tb-label">Grid</span>
+      </button>
+
+      <!-- Templates Quick Menu -->
+      <div class="tb-separator"></div>
+      <div class="tb-select-wrapper">
+        <select class="tb-select" id="tb-sample-picker" title="Load Starter Examples">
+          <option value="" disabled selected>📂 Sample Templates...</option>
+          <option value="empty">Empty Windows Form</option>
+          <option value="counter">Clicker Counter App</option>
+          <option value="stopwatch">Stopwatch & Timer</option>
+          <option value="converter">Currency / Unit Converter</option>
+          <option value="grades">Grade Calculator</option>
+        </select>
+      </div>
+
+      <!-- Help Quick Button -->
+      <div class="tb-separator"></div>
+      <button class="tb-btn" id="tb-help-guide" title="Student C# Windows Forms Guide">
+        <span class="tb-icon">💡</span>
+        <span class="tb-label">Student Help</span>
+      </button>
+    </div>
+
+    <!-- Main Workspace (Docking Layout) -->
+    <div class="vs-main-layout">
+
+      <!-- LEFT SIDEBAR: TOOLBOX -->
+      <aside class="vs-panel vs-panel-toolbox" id="panel-toolbox">
+        <div class="panel-header">
+          <span class="panel-title">
+            <span class="panel-icon">🧰</span> Toolbox
+          </span>
+          <div class="panel-tools">
+            <button class="panel-tool-btn" id="btn-dock-toolbox" title="Collapse Toolbox">«</button>
+          </div>
+        </div>
+        <div class="toolbox-search">
+          <input type="text" id="toolbox-filter" placeholder="Search Toolbox...">
+        </div>
+        <div class="toolbox-content">
+          <!-- Common Controls Category -->
+          <div class="toolbox-category expanded" data-cat="common">
+            <div class="category-header">
+              <span class="cat-arrow">▼</span>
+              <span class="cat-name">Common Controls</span>
+            </div>
+            <div class="category-items">
+              <!-- Pointer tool -->
+              <div class="toolbox-item active" data-tool="pointer" title="Pointer (Select controls)">
+                <span class="tool-icon">↖</span>
+                <span class="tool-name">Pointer</span>
+              </div>
+              <!-- User Required Controls -->
+              <div class="toolbox-item" draggable="true" data-tool="Button" title="Button: Raises an event when the user clicks it.">
+                <span class="tool-icon tool-btn-icon">🔘</span>
+                <span class="tool-name">Button</span>
+              </div>
+              <div class="toolbox-item" draggable="true" data-tool="TextBox" title="TextBox: Allows the user to enter text.">
+                <span class="tool-icon tool-txt-icon">ab|</span>
+                <span class="tool-name">TextBox</span>
+              </div>
+              <div class="toolbox-item" draggable="true" data-tool="Label" title="Label: Displays non-editable text or status.">
+                <span class="tool-icon tool-lbl-icon">A</span>
+                <span class="tool-name">Label</span>
+              </div>
+              <div class="toolbox-item" draggable="true" data-tool="ComboBox" title="ComboBox: Displays an editable textbox with a drop-down list of items.">
+                <span class="tool-icon tool-cmb-icon">▼</span>
+                <span class="tool-name">ComboBox</span>
+              </div>
+              <div class="toolbox-item" draggable="true" data-tool="Timer" title="Timer: Raises an event at user-defined intervals (non-visual).">
+                <span class="tool-icon tool-tmr-icon">⏱</span>
+                <span class="tool-name">Timer</span>
+              </div>
+              <!-- Useful Bonus Controls for Student Projects -->
+              <div class="toolbox-item" draggable="true" data-tool="CheckBox" title="CheckBox: Enables the user to select or clear the associated option.">
+                <span class="tool-icon tool-chk-icon">☑</span>
+                <span class="tool-name">CheckBox</span>
+              </div>
+              <div class="toolbox-item" draggable="true" data-tool="ListBox" title="ListBox: Displays a list from which the user can select items.">
+                <span class="tool-icon tool-lst-icon">☰</span>
+                <span class="tool-name">ListBox</span>
+              </div>
+              <div class="toolbox-item" draggable="true" data-tool="ProgressBar" title="ProgressBar: Indicates the progress of an operation.">
+                <span class="tool-icon tool-pbr-icon">▰</span>
+                <span class="tool-name">ProgressBar</span>
+              </div>
+              <div class="toolbox-item" draggable="true" data-tool="PictureBox" title="PictureBox: Displays an image on the form.">
+                <span class="tool-icon tool-pic-icon">🖼</span>
+                <span class="tool-name">PictureBox</span>
+              </div>
+            </div>
+          </div>
+          <!-- All Windows Forms Category -->
+          <div class="toolbox-category collapsed" data-cat="all">
+            <div class="category-header">
+              <span class="cat-arrow">▶</span>
+              <span class="cat-name">All Windows Forms</span>
+            </div>
+            <div class="category-items">
+              <div class="toolbox-hint">Contains all available WinForms components above.</div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- CENTER: DOCUMENT WELL / EDITOR TABS & CANVAS -->
+      <main class="vs-center-area">
+        <!-- Document Tabs -->
+        <div class="doc-tabs-bar" id="doc-tabs-bar">
+          <div class="doc-tab active" data-tab="designer" id="tab-designer">
+            <span class="tab-icon">🖼</span>
+            <span class="tab-title">Form1.cs [Design]</span>
+            <span class="tab-close" title="Designer cannot be closed">✕</span>
+          </div>
+          <div class="doc-tab" data-tab="code" id="tab-code">
+            <span class="tab-icon">#</span>
+            <span class="tab-title">Form1.cs</span>
+            <span class="tab-close" title="Close">✕</span>
+          </div>
+          <div class="doc-tab" data-tab="designer-code" id="tab-designer-code">
+            <span class="tab-icon">#</span>
+            <span class="tab-title">Form1.Designer.cs</span>
+            <span class="tab-close" title="Close">✕</span>
+          </div>
+          <div class="doc-tab" data-tab="program" id="tab-program">
+            <span class="tab-icon">#</span>
+            <span class="tab-title">Program.cs</span>
+            <span class="tab-close" title="Close">✕</span>
+          </div>
+        </div>
+
+        <!-- Center Content Views -->
+        <div class="doc-views-container">
+
+          <!-- VIEW 1: VISUAL FORM DESIGNER -->
+          <div class="doc-view active" id="view-designer">
+            <div class="designer-scroll-wrapper" id="designer-scroll-wrapper">
+              <div class="designer-work-area" id="designer-work-area">
+
+                <!-- The Windows Form Window in the Designer -->
+                <div class="winform-window" id="winform-window" style="width: 480px; height: 360px;">
+                  <!-- WinForms Title Bar -->
+                  <div class="winform-titlebar" id="winform-titlebar">
+                    <div class="winform-titlebar-icon">
+                      <svg viewBox="0 0 16 16" width="14" height="14">
+                        <rect x="2" y="2" width="12" height="12" fill="none" stroke="#0078d7" stroke-width="2"/>
+                        <line x1="2" y1="6" x2="14" y2="6" stroke="#0078d7" stroke-width="1"/>
+                      </svg>
+                    </div>
+                    <span class="winform-title-text" id="winform-title-text">Form1</span>
+                    <div class="winform-sys-buttons">
+                      <span class="sys-btn sys-min">─</span>
+                      <span class="sys-btn sys-max">□</span>
+                      <span class="sys-btn sys-close">✕</span>
+                    </div>
+                  </div>
+
+                  <!-- WinForms Client / Canvas Area -->
+                  <div class="winform-client-area grid-snapping" id="winform-client-area">
+                    <!-- Controls are dynamically placed here -->
+                  </div>
+
+                  <!-- Form Resize Handle (bottom-right) -->
+                  <div class="form-resize-handle" id="form-resize-handle" title="Resize Form"></div>
+                </div>
+
+                <!-- Component Tray for Non-Visual components like Timers -->
+                <div class="designer-component-tray" id="designer-component-tray">
+                  <div class="tray-label">Components Tray (Non-visual controls):</div>
+                  <div class="tray-items-container" id="tray-items-container">
+                    <!-- Timer components placed here (e.g., timer1 [Timer]) -->
+                    <span class="tray-empty-hint" id="tray-empty-hint">Drop a Timer here or on the form</span>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Designer Floating Quick Info & Zoom -->
+            <div class="designer-status-bar">
+              <span id="designer-cursor-pos">X: 0, Y: 0</span>
+              <span class="sep">|</span>
+              <span id="designer-selected-info">No control selected</span>
+              <span class="sep">|</span>
+              <span id="designer-grid-info">Snap to grid: 8px</span>
+              <span class="designer-right-tools">
+                <button class="mini-btn" id="btn-align-center" title="Center Control Horizontally">Align Center</button>
+                <button class="mini-btn" id="btn-delete-sel" title="Delete Selected Control">Delete</button>
+              </span>
+            </div>
+          </div>
+
+          <!-- VIEW 2: C# CODE EDITOR (Form1.cs) -->
+          <div class="doc-view" id="view-code">
+            <div class="code-editor-top-nav">
+              <div class="code-scope-dropdown">
+                <span class="scope-icon">C#</span>
+                <span class="scope-text">WindowsFormsApp1.Form1</span>
+              </div>
+              <div class="code-members-dropdown">
+                <select id="code-members-select">
+                  <option value="all">(Declarations &amp; Methods)</option>
+                  <option value="Form1">Form1()</option>
+                  <option value="Form1_Load">Form1_Load(object sender, EventArgs e)</option>
+                </select>
+              </div>
+              <div class="code-actions">
+                <button class="mini-btn" id="btn-insert-sample" title="Insert C# Template Code">Insert Sample Snippet</button>
+                <button class="mini-btn" id="btn-format-code" title="Format C# Code">Format Code</button>
+              </div>
+            </div>
+
+            <div class="code-editor-container" id="code-editor-container">
+              <!-- Line Numbers -->
+              <div class="code-gutter" id="code-gutter">
+                <!-- Numbers generated dynamically -->
+              </div>
+              <!-- Code Text Area -->
+              <div class="code-textarea-wrapper">
+                <textarea class="code-editor-textarea" id="code-editor-textarea" spellcheck="false" autocomplete="off" autocapitalize="off"></textarea>
+                <!-- Highlight overlay -->
+                <pre class="code-highlight-overlay" id="code-highlight-overlay"><code id="code-highlight-content"></code></pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- VIEW 3: Form1.Designer.cs (Read-only Generated WinForms Designer Code) -->
+          <div class="doc-view" id="view-designer-code">
+            <div class="code-editor-top-nav">
+              <span class="designer-code-warning">⚡ Auto-generated by Windows Form Designer. Do not modify manually.</span>
+            </div>
+            <div class="code-editor-container">
+              <div class="code-gutter" id="designer-code-gutter"></div>
+              <div class="code-textarea-wrapper">
+                <textarea class="code-editor-textarea" id="designer-code-textarea" readonly spellcheck="false"></textarea>
+                <pre class="code-highlight-overlay"><code id="designer-code-highlight"></code></pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- VIEW 4: Program.cs -->
+          <div class="doc-view" id="view-program">
+            <div class="code-editor-top-nav">
+              <span class="designer-code-warning">Application Entry Point: Program.cs</span>
+            </div>
+            <div class="code-editor-container">
+              <div class="code-gutter" id="program-code-gutter"></div>
+              <div class="code-textarea-wrapper">
+                <textarea class="code-editor-textarea" id="program-code-textarea" readonly spellcheck="false"></textarea>
+                <pre class="code-highlight-overlay"><code id="program-code-highlight"></code></pre>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- BOTTOM PANEL: OUTPUT & ERROR LIST -->
+        <div class="vs-bottom-panel" id="vs-bottom-panel">
+          <div class="bottom-panel-resizer" id="bottom-panel-resizer"></div>
+          <div class="bottom-panel-header">
+            <div class="bottom-panel-tabs">
+              <div class="b-tab active" data-btab="output" id="btab-output">
+                <span class="b-icon">📋</span> Output
+              </div>
+              <div class="b-tab" data-btab="errors" id="btab-errors">
+                <span class="b-icon">❌</span> Error List (<span id="error-count">0</span>)
+              </div>
+            </div>
+            <div class="bottom-panel-tools">
+              <button class="mini-btn" id="btn-clear-output" title="Clear Output">Clear</button>
+              <button class="panel-tool-btn" id="btn-collapse-bottom" title="Collapse Output">▼</button>
+            </div>
+          </div>
+          <div class="bottom-panel-content">
+            <!-- Output Console -->
+            <div class="b-view active" id="bview-output">
+              <div class="output-console" id="output-console">
+                <div class="out-line info">Rob# [Version 1.0.0] C# Windows Forms Environment</div>
+                <div class="out-line info">Ready. Design your form or write C# code, then press ▶ Start (F5).</div>
+              </div>
+            </div>
+            <!-- Errors View -->
+            <div class="b-view" id="bview-errors">
+              <div class="errors-table-wrapper">
+                <table class="errors-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 30px;"></th>
+                      <th style="width: 80px;">Code</th>
+                      <th>Description</th>
+                      <th style="width: 120px;">File</th>
+                      <th style="width: 60px;">Line</th>
+                    </tr>
+                  </thead>
+                  <tbody id="errors-table-body">
+                    <tr class="no-errors-row">
+                      <td colspan="5">No errors found. Everything builds cleanly!</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </main>
+
+      <!-- RIGHT SIDEBAR: SOLUTION EXPLORER & PROPERTIES -->
+      <aside class="vs-panel vs-panel-right" id="panel-right">
+
+        <!-- Solution Explorer (Top half of right panel) -->
+        <div class="vs-subpanel solution-explorer-subpanel" id="subpanel-solution">
+          <div class="panel-header">
+            <span class="panel-title">
+              <span class="panel-icon">📁</span> Solution Explorer
+            </span>
+            <div class="panel-tools">
+              <button class="panel-tool-btn" id="btn-refresh-solution" title="Refresh Solution">🔄</button>
+              <button class="panel-tool-btn" id="btn-toggle-solution-panel" title="Collapse Solution Explorer">─</button>
+            </div>
+          </div>
+          <div class="solution-tree-content" id="solution-tree-content">
+            <ul class="solution-tree">
+              <li class="tree-item tree-solution expanded">
+                <span class="tree-toggle">▼</span>
+                <span class="tree-icon">💼</span>
+                <span class="tree-label">Solution 'WindowsFormsApp1' (1 project)</span>
+                <ul>
+                  <li class="tree-item tree-project expanded">
+                    <span class="tree-toggle">▼</span>
+                    <span class="tree-icon">📦</span>
+                    <span class="tree-label">WindowsFormsApp1</span>
+                    <ul>
+                      <li class="tree-item">
+                        <span class="tree-indent"></span>
+                        <span class="tree-icon">⚙</span>
+                        <span class="tree-label">Properties</span>
+                      </li>
+                      <li class="tree-item">
+                        <span class="tree-indent"></span>
+                        <span class="tree-icon">🔗</span>
+                        <span class="tree-label">References</span>
+                      </li>
+                      <li class="tree-item tree-file expanded" id="tree-form1-node">
+                        <span class="tree-toggle">▼</span>
+                        <span class="tree-icon">🖼</span>
+                        <span class="tree-label">Form1.cs</span>
+                        <ul>
+                          <li class="tree-item" id="tree-form1-designer-node">
+                            <span class="tree-indent"></span>
+                            <span class="tree-icon">#</span>
+                            <span class="tree-label">Form1.Designer.cs</span>
+                          </li>
+                        </ul>
+                      </li>
+                      <li class="tree-item" id="tree-program-node">
+                        <span class="tree-indent"></span>
+                        <span class="tree-icon">#</span>
+                        <span class="tree-label">Program.cs</span>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Vertical Splitter between Solution & Properties -->
+        <div class="right-panel-splitter" id="right-panel-splitter"></div>
+
+        <!-- Properties Window (Bottom half of right panel) -->
+        <div class="vs-subpanel properties-subpanel" id="subpanel-properties">
+          <div class="panel-header">
+            <span class="panel-title">
+              <span class="panel-icon">⚙</span> Properties
+            </span>
+            <div class="panel-tools">
+              <!-- Categorized vs Alphabetical icons -->
+              <button class="panel-tool-btn active" id="btn-prop-cat" title="Categorized">📑</button>
+              <button class="panel-tool-btn" id="btn-prop-alpha" title="Alphabetical">🔤</button>
+              <span class="panel-sep">|</span>
+              <!-- Events mode (lightning bolt) -->
+              <button class="panel-tool-btn" id="btn-prop-props" title="Properties">📝</button>
+              <button class="panel-tool-btn" id="btn-prop-events" title="Events (Double click any control to create event handler)">⚡</button>
+            </div>
+          </div>
+
+          <!-- Control Selection Dropdown -->
+          <div class="properties-selector-bar">
+            <select class="prop-control-select" id="prop-control-select">
+              <option value="form">Form1 System.Windows.Forms.Form</option>
+            </select>
+          </div>
+
+          <!-- Properties Grid -->
+          <div class="properties-grid-container" id="properties-grid-container">
+            <table class="properties-table" id="properties-table">
+              <tbody id="properties-tbody">
+                <!-- Dynamically generated property rows -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Property Description Help Box -->
+          <div class="property-help-box" id="property-help-box">
+            <div class="help-prop-name" id="help-prop-name">Text</div>
+            <div class="help-prop-desc" id="help-prop-desc">The text associated with the control or window.</div>
+          </div>
+        </div>
+
+      </aside>
+
+    </div>
+
+    <!-- Status Bar (Bottom of Visual Studio) -->
+    <footer class="vs-statusbar" id="vs-statusbar">
+      <div class="status-left">
+        <span class="status-indicator ready" id="status-indicator"></span>
+        <span class="status-text" id="status-text">Ready</span>
+      </div>
+      <div class="status-center">
+        <span id="status-controls-count">Controls: 0</span>
+        <span class="status-sep">|</span>
+        <span id="status-zoom">100%</span>
+      </div>
+      <div class="status-right">
+        <span id="status-caret">Ln 1, Col 1</span>
+        <span class="status-sep">|</span>
+        <span>Spaces: 4</span>
+        <span class="status-sep">|</span>
+        <span>UTF-8</span>
+        <span class="status-sep">|</span>
+        <span>C# (.NET 8.0)</span>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- MODAL / RUNNING APPLICATION WINDOW (WHEN USER PRESSES F5) -->
+  <!-- ======================================================== -->
+  <div class="running-app-overlay" id="running-app-overlay">
+    <div class="running-app-window" id="running-app-window">
+      <!-- Windows Title Bar -->
+      <div class="running-app-titlebar" id="running-app-titlebar">
+        <div class="running-app-icon">
+          <svg viewBox="0 0 16 16" width="14" height="14">
+            <rect x="2" y="2" width="12" height="12" fill="#0078d7" rx="2"/>
+            <text x="4" y="11" fill="white" font-size="9" font-family="sans-serif" font-weight="bold">C#</text>
+          </svg>
+        </div>
+        <span class="running-app-title" id="running-app-title">Form1</span>
+        <div class="running-app-controls">
+          <span class="r-btn" id="run-btn-min">─</span>
+          <span class="r-btn" id="run-btn-max">□</span>
+          <span class="r-btn r-close" id="run-btn-close" title="Close Application">✕</span>
+        </div>
+      </div>
+
+      <!-- Debug Status Ribbon -->
+      <div class="running-app-debug-bar">
+        <span class="debug-badge">● DEBUGGING</span>
+        <span class="debug-msg">Application running interactive live C# engine</span>
+        <button class="mini-btn btn-danger" id="btn-stop-running-app" title="Stop Application (Shift+F5)">⏹ Stop Debugging</button>
+      </div>
+
+      <!-- Application Live Form Canvas Area -->
+      <div class="running-app-canvas" id="running-app-canvas">
+        <!-- Live Form Controls cloned here -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- COMBOBOX ITEMS EDITOR MODAL DIALOG                        -->
+  <!-- ======================================================== -->
+  <div class="vs-modal-backdrop" id="modal-items-editor">
+    <div class="vs-dialog-window">
+      <div class="vs-dialog-titlebar">
+        <span>String Collection Editor - Items</span>
+        <button class="dialog-close-btn" id="btn-close-items-dialog">✕</button>
+      </div>
+      <div class="vs-dialog-body">
+        <p class="dialog-instructions">Enter the strings in the collection (one per line):</p>
+        <textarea id="items-collection-textarea" class="dialog-textarea" rows="8" placeholder="Item 1&#10;Item 2&#10;Item 3"></textarea>
+      </div>
+      <div class="vs-dialog-footer">
+        <button class="vs-dialog-btn default-btn" id="btn-save-items">OK</button>
+        <button class="vs-dialog-btn" id="btn-cancel-items">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- STUDENT TUTORIAL & CHEATSHEET MODAL                       -->
+  <!-- ======================================================== -->
+  <div class="vs-modal-backdrop" id="modal-help-dialog">
+    <div class="vs-dialog-window vs-help-dialog">
+      <div class="vs-dialog-titlebar">
+        <span id="help-modal-title">C# Windows Forms Student Guide</span>
+        <button class="dialog-close-btn" id="btn-close-help-dialog">✕</button>
+      </div>
+      <div class="vs-dialog-body help-content" id="help-modal-content">
+        <!-- Injected dynamically -->
+      </div>
+      <div class="vs-dialog-footer">
+        <button class="vs-dialog-btn default-btn" id="btn-dismiss-help">Got it!</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hidden File Input for Open Project -->
+  <input type="file" id="file-input-project" accept=".json" style="display: none;">
+
+  <!-- Scripts -->
+  <script src="js/csharp-engine.js"></script>
+  <script src="js/templates.js"></script>
+  <script src="js/designer.js"></script>
+  <script src="js/code-editor.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
